@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/***
+ * User management controller to manage users
+ */
+
 @RestController
 @RequestMapping("/user")
 public class UserController {

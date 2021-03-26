@@ -7,10 +7,14 @@ import com.kry.servicepoller.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+/***
+ * User Management Service
+ * To manage service users
+ */
 
 @Service
 public class UserServiceImpl implements UserService {

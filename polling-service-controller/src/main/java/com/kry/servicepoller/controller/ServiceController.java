@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Service management Controller for basic Crud
+ */
 @RestController
 @RequestMapping("/services")
 public class ServiceController {
@@ -37,7 +40,7 @@ public class ServiceController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceDto createService(@RequestHeader(name = X_TRANSACTION_ID, required = false)
-                                                String headerXTransactionId,
+                                            String headerXTransactionId,
                                     @RequestBody ServiceDto serviceDto) {
         return apiService.createApi(serviceDto);
     }
@@ -45,14 +48,18 @@ public class ServiceController {
     @PutMapping("/update")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ServiceDto> updateService(@RequestBody ServiceDto serviceDto) {
+    public ResponseEntity<ServiceDto> updateService(@RequestHeader(name = X_TRANSACTION_ID, required = false)
+                                                            String headerXTransactionId,
+                                                    @RequestBody ServiceDto serviceDto) {
         return ResponseEntity.ok(apiService.updateApi(serviceDto));
     }
 
     @DeleteMapping("/delete")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public void deleteService(@RequestBody ServiceDto serviceDto) {
+    public void deleteService(@RequestHeader(name = X_TRANSACTION_ID, required = true)
+                                      String headerXTransactionId,
+                              @RequestBody ServiceDto serviceDto) {
         apiService.deleteApi(serviceDto);
     }
 }

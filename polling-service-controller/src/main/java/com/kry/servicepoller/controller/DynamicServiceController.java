@@ -5,6 +5,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
 
+/***
+ * Dynamic Service Controller
+ * This is just a test to ensure that created services
+ * have endpoints
+ */
+
 @RestController
 @RequestMapping("/dynamic")
 public class DynamicServiceController {

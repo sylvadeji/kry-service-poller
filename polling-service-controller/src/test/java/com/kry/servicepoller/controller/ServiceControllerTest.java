@@ -15,25 +15,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -111,7 +107,54 @@ public class ServiceControllerTest {
                                 .characterEncoding("UTF-8")
                                 .content(getRequestJsonFilter(service)));
 
+
         MvcResult mvcResult = actions.andDo(print()).andExpect(status().isCreated()).andReturn();
+
+        assertNotNull(mvcResult.getResponse());
+    }
+
+    @Test
+    public void updateServiceItemTest() throws Exception {
+
+        ServiceDto service = new ServiceDto();
+        service.setServiceId(1L);
+        service.setService_Url(".service/all");
+        service.setName("getItem");
+
+        when(apiService.updateApi(any())).thenReturn(service);
+
+        ResultActions actions = mockMvc
+                .perform(put("/services/update")
+                        .headers(getDefaultHeaders())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(getRequestJsonFilter(service)));
+
+
+        MvcResult mvcResult = actions.andDo(print()).andExpect(status().isOk()).andReturn();
+
+        assertNotNull(mvcResult.getResponse());
+    }
+
+    @Test
+    public void deleteServiceItemTest() throws Exception {
+
+        ServiceDto service = new ServiceDto();
+        service.setServiceId(1L);
+        service.setService_Url(".service/all");
+        service.setName("getItem");
+
+        ResultActions actions = mockMvc
+                .perform(delete("/services/delete")
+                        .headers(getDefaultHeaders())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(getRequestJsonFilter(service)));
+
+
+        MvcResult mvcResult = actions.andDo(print()).andExpect(status().isOk()).andReturn();
 
         assertNotNull(mvcResult.getResponse());
     }

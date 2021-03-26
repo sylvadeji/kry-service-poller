@@ -16,6 +16,10 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/***
+ * Service To manage all Services
+ */
+
 @Service
 public class ApiServiceImpl implements ApiService {
     @Autowired

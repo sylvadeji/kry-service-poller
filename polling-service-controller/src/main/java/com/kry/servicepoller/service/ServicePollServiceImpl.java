@@ -20,6 +20,10 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/***
+ * Polling Service To schedule and fetch polling
+ */
+
 @Service
 @Slf4j
 public class ServicePollServiceImpl implements ServicePollService {
