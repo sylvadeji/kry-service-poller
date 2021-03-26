@@ -16,7 +16,3 @@ the all services together with their status.
 1. Implemented a Rest Service using Spring Boot for CRUD operation and also a Spring MVC for the UI.
 2. Spring Scheduler with a delay for polling services
 
-
-#EXTRA NOTE
-
-This would have been totally completed awesomely if there is more time.
