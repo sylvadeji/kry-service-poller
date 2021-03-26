@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.kry.servicepoller.ServicePollerController;
 import com.kry.servicepoller.controller.ServiceController;
+import com.kry.servicepoller.model.ServiceModel;
 import com.kry.servicepoller.model.dto.ServiceDto;
+import com.kry.servicepoller.repository.ServiceModelRepository;
 import com.kry.servicepoller.service.ApiService;
 import com.kry.servicepoller.service.exception.ControllerExceptionHandler;
 import org.junit.Before;
@@ -15,6 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -55,24 +61,19 @@ public class ServicePollerControllerTest {
     @Mock
     private ApiService apiService;
 
+    @Mock
+    ServiceModelRepository serviceModelRepository;
+
 
     @Test
     public void homePageTest() throws Exception {
-
-        ServiceDto service = new ServiceDto();
-        service.setServiceId(1L);
-        service.setService_Url(".service/all");
-        service.setName("getItem");
-
-        when(apiService.updateApi(any())).thenReturn(service);
-
         ResultActions actions = mockMvc
                 .perform(get("/")
                         //.headers(getDefaultHeaders())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-                        .content(getRequestJsonFilter(service)));
+                        .characterEncoding("UTF-8"));
+        // .content(getRequestJsonFilter(service)));
 
 
         MvcResult mvcResult = actions.andDo(print()).andExpect(status().isOk()).andReturn();
@@ -80,34 +81,41 @@ public class ServicePollerControllerTest {
         assertNotNull(mvcResult.getResponse());
     }
 
-
-
-    @GetMapping("/")
-    public String homePage(Model model) {
-        model.addAttribute("appName", appName);
-        return "index";
-    }
-
     @Test
-    public void home(){
+    public void getServicesPageTest() throws Exception {
+        Optional<Integer> page = Optional.of(1);
+        Optional<Integer> size = Optional.of(10);
 
-    }
-    @Test
-    public void getAllServicesTest() throws Exception {
-        List<ServiceDto> services = new ArrayList<ServiceDto>();
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
 
-        ServiceDto oService = new ServiceDto();
-        oService.setServiceId(1L);
-        oService.setService_Url(".service/all");
-        oService.setName("getAll");
+        ServiceModel oModel = new ServiceModel();
+        oModel.setName("getNumber");
 
-        services.add(oService);
+        List<ServiceModel> serviceModels = new ArrayList<ServiceModel>();
 
-        when(apiService.getAllServices()).thenReturn(services);
+        serviceModels.add(oModel);
 
-        List<ServiceDto> actual = serviceController.getAllServices();
+        when(serviceModelRepository.findAll()).thenReturn(serviceModels);
 
-        assertEquals(services, actual);
+        Page<ServiceModel> pages;
+
+        pages = new PageImpl<ServiceModel>(serviceModels,
+                PageRequest.of(currentPage, pageSize), serviceModels.size());
+
+        when(apiService.getPaginatedServices(any())).thenReturn(pages);
+
+        ResultActions actions = mockMvc
+                .perform(get("/service/all")
+                        //.headers(getDefaultHeaders())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(getRequestJsonFilter(serviceModels)));
+
+        MvcResult mvcResult = actions.andDo(print()).andExpect(status().isOk()).andReturn();
+
+        assertNotNull(mvcResult.getResponse());
     }
 
     private String getRequestJsonFilter(Object request) throws JsonProcessingException {

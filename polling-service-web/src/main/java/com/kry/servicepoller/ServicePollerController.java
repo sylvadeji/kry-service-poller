@@ -39,6 +39,7 @@ public class ServicePollerController {
     }
 
     @GetMapping("/service/all")
+    @ResponseStatus(HttpStatus.OK)
     public String getServices(Model model, @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
@@ -62,6 +63,7 @@ public class ServicePollerController {
     }
 
     @GetMapping("/poller")
+    @ResponseStatus(HttpStatus.OK)
     public String servicePollerPage(Model model, @RequestParam("page") Optional<Integer> page,
                                     @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
