@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title th:text="${appName}"></title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+</head>
+<body style="min-height: calc(100vh - [header-height]px - [footer-height]px);">
+<div class="container" >
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#" th:text="${appName}">Application Name</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/service/all">API Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/poller">Service Poller</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">User Management</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0 disabled" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <div class="card-body">
+                        <h4>Api Management</h4>
+                        <br>
+                        <div class="table-responsive" style="font-size:11px;">
+                            <a class="btn btn-md btn-primary" href="/new" role="button">Create New Service</a>
+                            <br />
+                            <br />
+                            <table class="table table-border" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10%">Id</th>
+                                    <th style="width: 20%">Name</th>
+                                    <th style="width: 15%">Url</th>
+                                    <th style="width: 15%">Status</th>
+                                    <th>Date Created</th>
+                                    <th>Date Last Modified</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="service, iStat : ${servicePage.content}"
+                                    th:style="${iStat.odd}? 'font-weight: bold;background-color:#efefef;'"
+                                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+                                    <td th:text="${iStat.index + 1}"></td>
+                                    <!--<td th:text="${service.serviceId}"></td>-->
+                                    <td th:text="${service.name}"></td>
+                                    <td th:text="${service.service_Url}"></td>
+                                    <td th:text="${service.status}"></td>
+                                    <td th:text="${service.dateCreated}"></td>
+                                    <td th:text="${service.lastDateModified}"></td>
+                                    <td ><a href="#" th:href="@{/edit/{id}(id=${service.serviceId})}">Update</a>
+                                        |<a href="#" onclick="return confirm('Are you sure you want to delete this service?');"
+                                            th:href="@{'/delete/' + ${service.serviceId}}">Delete</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div align="center" class="col-md-12">
+                                    <table width="100%" cellspacing="0">
+                                        <tr>
+                                            <td style="text-align:left;" th:if="${servicePage.totalPages > 0}"
+                                                th:each="pageNumber : ${pageNumbers}">
+                                                <a th:href="@{/service/all(size=${servicePage.size}, page=${pageNumber})}"
+                                                   th:text=${pageNumber}
+                                                   th:class="${pageNumber==servicePage.number + 1} ? btn-danger"></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <p>@ 2021 Kry </p>
+        </nav>
+    </footer>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

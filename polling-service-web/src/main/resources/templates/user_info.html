@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title th:text="'User Info' + ${appName}"></title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+</head>
+<body>
+<div class="container" style="min-height: calc(100vh - [header-height]px - [footer-height]px);">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Kry Service Poller</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/service/all">API Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/poller">Service Poller</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">User Management</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0 disabled" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div align="center">
+            <h4>Information</h4>
+            <br/>
+            <br/>
+            <br/>
+            <div class="alert alert-info">
+                <a href="#" class="close" data-dismiss="alert"
+                   aria-label="close">×</a>
+                <strong>information!</strong> <br />Module Not implemented yet.
+            </div>
+            <br />
+            <div align="center"><a class="btn btn-md btn-primary" href="/" role="button">Return to Home</a></div>
+            <br>
+            <br/>
+            <br/>
+        </div>
+    </main>
+    <footer>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <p>@ 2021 Kry </p>
+        </nav>
+    </footer>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

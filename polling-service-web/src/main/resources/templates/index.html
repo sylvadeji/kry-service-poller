@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title th:text="${appName}"></title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+</head>
+<body>
+<div class="container" style="min-height: calc(100vh - [header-height]px - [footer-height]px);">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#" th:text="${appName}">Application Name</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/service/all">API Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/poller">Service Poller</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">User Management</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0 disabled" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="jumbotron">
+            <h4 th:text="'Welcome to ' + ${appName}">Kry</h4>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            API Management
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Module for managing all services including basic crud
+                                functions.</p>
+                            <a href="/service/all" class="card-link">Click here to continue</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            Service Poller
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Module for checking service availability.</p>
+                            <a href="/poller" class="card-link">Click here to continue</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            User Management
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Module to manage application user roles and permission.</p>
+                            <a href="/users" class="card-link">Click here to continue</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <p> Build a simple service poller that keeps a list of
+                services (defined by a URL), and periodically does a HTTP GET to each and
+                saves the response ("OK" or "FAIL"). Apart from the polling logic we want to
+                have all the services visualised and easily managed in a basic UI presenting
+                the all services together with their status.</p>
+        </div>
+    </main>
+    <footer>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <p>@ 2021 Kry </p>
+        </nav>
+    </footer>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
