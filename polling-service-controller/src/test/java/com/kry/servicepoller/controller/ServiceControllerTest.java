@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,6 +42,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 public class ServiceControllerTest {
 
     private MockMvc mockMvc;
+
+    private static final String X_TRANSACTION_ID = "Transaction-Id";
 
     @InjectMocks
     private ServiceController serviceController;
@@ -56,16 +58,6 @@ public class ServiceControllerTest {
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();
     }
-
-/*    @Test
-    public void testListResourcesforMultipleIds() throws  Exception {
-        Map<String, String> p = new HashMap<>();
-        p.put("id", "231,232");
-        ResponseEntity<MappingJacksonValue> actual =
-                resourceController.getResourceList("", null, null,"", "", 2, 2, "", p, false, null);
-        assertEquals(HttpStatus.OK, actual.getStatusCode());
-    }*/
-
 
     @Test
     public void getAllServicesTest() throws Exception {
@@ -85,18 +77,44 @@ public class ServiceControllerTest {
         assertEquals(services, actual);
     }
 
-  /*  ResultActions actions = mockMvc
-            .perform(
-                    post("/v1/resource/assign")
-                            .headers(getDefaultHeaders())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)
-                            .characterEncoding("UTF-8")
-                            .content(getRequestJsonFilter(resource)));
+    @Test
+    public void getSingleServiceItemTest() throws Exception {
 
-    MvcResult mvcResult = actions.andDo(print()).andExpect(status().isOk()).andReturn();*/
+        ServiceDto service = new ServiceDto();
+        service.setServiceId(1L);
+        service.setService_Url(".service/all");
+        service.setName("getItem");
 
-    //assertNotNull(mvcResult.getResponse());
+        when(apiService.getService(anyLong())).thenReturn(service);
+
+        ServiceDto actual = serviceController.getService(1L);
+
+        assertEquals(service, actual);
+    }
+
+    @Test
+    public void createServiceItemTest() throws Exception {
+
+        ServiceDto service = new ServiceDto();
+        service.setServiceId(1L);
+        service.setService_Url(".service/all");
+        service.setName("getItem");
+
+        when(apiService.createApi(any())).thenReturn(service);
+
+        ResultActions actions = mockMvc
+                .perform(
+                        post("/services/create")
+                                .headers(getDefaultHeaders())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .characterEncoding("UTF-8")
+                                .content(getRequestJsonFilter(service)));
+
+        MvcResult mvcResult = actions.andDo(print()).andExpect(status().isCreated()).andReturn();
+
+        assertNotNull(mvcResult.getResponse());
+    }
 
     private String getRequestJsonFilter(Object request) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -106,5 +124,11 @@ public class ServiceControllerTest {
 
         ObjectWriter objectWriterFilter = objectMapper.writer(filters);
         return objectWriterFilter.writeValueAsString(request);
+    }
+
+    private HttpHeaders getDefaultHeaders() {
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(X_TRANSACTION_ID, "test");
+        return httpHeaders;
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 public class ServiceController {
 
     public static final String ID = "id";
+    public static final String X_TRANSACTION_ID = "Transaction-Id";
 
     @Autowired
     private ApiService apiService;
@@ -35,7 +36,9 @@ public class ServiceController {
     @PostMapping("/create")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public ServiceDto createService(@RequestBody ServiceDto serviceDto) {
+    public ServiceDto createService(@RequestHeader(name = X_TRANSACTION_ID, required = false)
+                                                String headerXTransactionId,
+                                    @RequestBody ServiceDto serviceDto) {
         return apiService.createApi(serviceDto);
     }
 

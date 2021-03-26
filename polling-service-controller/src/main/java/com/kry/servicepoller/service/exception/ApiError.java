@@ -1,6 +1,5 @@
 package com.kry.servicepoller.service.exception;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
