@@ -5,6 +5,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>polling-service-main</module>
+		<module>polling-service-controller</module>
+		<module>polling-service-web</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
